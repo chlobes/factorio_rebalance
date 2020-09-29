@@ -47,10 +47,22 @@ data:extend{{
 	default_value = true,
 }}
 data:extend{{
-	type = "bool-setting",
-	name = "rebalance fast inserters",
+	type = "double-setting",
+	name = "fast inserter power cost (KJ)",
 	setting_type = "startup",
-	default_value = true,
+	default_value = 4.5,
+}}
+data:extend{{
+	type = "double-setting",
+	name = "fast inserter cost multiplier",
+	setting_type = "startup",
+	default_value = 2,
+}}
+data:extend{{
+	type = "double-setting",
+	name = "fast inserter idle power (kW)",
+	setting_type = "startup",
+	default_value = 0.8,
 }}
 data:extend{{
 	type = "bool-setting",

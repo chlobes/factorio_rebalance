@@ -59,14 +59,12 @@ if setting("rebalance furnace power and emissions") then
 	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 4
 	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 1.25
 end
-if setting("rebalance fast inserters") then
-	for _, v in pairs(data.raw["recipe"]["fast-inserter"].ingredients) do
-		v[2] = v[2] + 1
-	end
-	data.raw["inserter"]["fast-inserter"].energy_per_movement = "4.5KJ"
-	data.raw["inserter"]["fast-inserter"].energy_per_rotation = "4.5KJ"
-	data.raw["inserter"]["fast-inserter"].energy_source.drain = "0.8kW"
+for _, v in pairs(data.raw["recipe"]["fast-inserter"].ingredients) do
+	v[2] = v[2] * setting("fast inserter cost multiplier")
 end
+data.raw["inserter"]["fast-inserter"].energy_per_movement = setting("fast inserter power cost (KJ)") .. "KJ"
+data.raw["inserter"]["fast-inserter"].energy_per_rotation = setting("fast inserter power cost (KJ)") .. "KJ"
+data.raw["inserter"]["fast-inserter"].energy_source.drain = setting("fast inserter idle power (kW)") .. "kW"
 data.raw["item"]["solid-fuel"].fuel_value = setting("solid fuel energy (MJ)") .. "MJ"
 data.raw["item"]["rocket-fuel"].fuel_value = setting("rocket fuel energy (MJ)") .. "MJ"
 data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel crafting time")
