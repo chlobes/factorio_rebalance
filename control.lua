@@ -15,6 +15,13 @@ local module_stats = {
 }
 script.on_init(function() if not global.beacons then global.beacons = {} end end)
 script.on_nth_tick(300, function()
+	local i = 0
+	for _, v in pairs(global.beacons) do
+		local techs = v[1].force.technologies
+		while techs["mining-productivity-"..i+1].researched do i = i + 1 end
+		break
+	end
+	local mining_prd_bonus = i * 10
 	for _, v in pairs(global.beacons) do
 		local output = v[2].get_module_inventory()
 		output.clear()
@@ -27,10 +34,24 @@ script.on_nth_tick(300, function()
 			pol = pol + (x.pol or 0) * stack
 		end
 		local p = 56
+		if v[1].bonus_mining_progress then prd = prd + mining_prd_bonus end
 		if spd - eff ~= 0 then output.insert{name=tostring(spd-eff+p+sign(spd-eff))} end
 		if spd ~= 0 then output.insert{name=tostring(spd+p*3+sign(spd))} end
-		if prd ~= 0 then output.insert{name=tostring(prd+p*5+sign(prd))} end
 		if pol ~= 0 then output.insert{name=tostring(-pol+p*7+sign(-pol))} end
+		if prd > 56 then
+			prd = 1.01^prd - 1 - 0.01*mining_prd_bonus
+			local v = 64
+			local n = 9
+			for i=1,n,1 do
+				if prd > v then
+					prd = prd - v
+					output.insert{name=tostring("mining-prd"..i)}
+				end
+				v = v / 2
+			end
+		else
+			if prd ~= 0 then output.insert{name=tostring(prd+p*5+sign(prd))} end
+		end
 	end
 end)
 function new_crafter(event)

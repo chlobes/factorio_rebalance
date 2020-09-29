@@ -73,8 +73,9 @@ data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel craftin
 
 for _, m in pairs(data.raw.module) do m.effect = {} end
 local p = 56
-for i=1,p*8,1 do
-	data.raw["module"][i] = {
+
+function blank_module(name)
+	data.raw["module"][name] = {
 		type = "module",
 		effect = {},
 		stack_size = 1,
@@ -82,8 +83,12 @@ for i=1,p*8,1 do
 		icon_size = 64,
 		category = "effectivity",
 		tier = 1,
-		name = i
+		name = name,
 	}
+end
+
+for i=1,p*8,1 do
+	blank_module(i)
 end
 for i=1,p*2,1 do
 	local v = i - p
@@ -92,6 +97,13 @@ for i=1,p*2,1 do
 	data.raw["module"][i+p*2].effect.speed = { bonus = 1.1^v - 1 }
 	data.raw["module"][i+p*4].effect.productivity = { bonus = 1.01^v - 1 }
 	data.raw["module"][i+p*6].effect.pollution = { bonus = 1.2^v - 1 }
+end
+local v = 64
+local n = 9
+for i=1,n,1 do --extra productivity modules for miners
+	blank_module("mining-prd"..i)
+	data.raw["module"]["mining-prd"..i].effect.productivity = v
+	v = v / 2
 end
 local beacon = data.raw["beacon"].beacon
 local delete = { "close_sound", "collision_box", "corpse", "damage_trigger_effect", "drawing_box", "dying_explosion", "flags","graphics_set","icon","icon_mipmaps","icon_size","max_health","minable","open_sound","radius_visualisation_picture","selection_box","vehicle_impact_sound","water_reflection","working_sound" }
@@ -102,6 +114,6 @@ end
 beacon.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
 beacon.distribution_effectivity = 1
 beacon.energy_source = { type = "void" }
-beacon.module_specification.module_slots = 4
+beacon.module_specification.module_slots = 3+n
 beacon.supply_area_distance = 0
 beacon.hide_alt_info = true
