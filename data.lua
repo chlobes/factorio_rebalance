@@ -99,7 +99,7 @@ for i=1,p*2,1 do
 	data.raw["module"][i+p*6].effect.pollution = { bonus = 1.2^v - 1 }
 end
 local v = 64
-local n = 9
+local n = 12
 for i=1,n,1 do --extra productivity modules for miners
 	blank_module("mining-prd"..i)
 	data.raw["module"]["mining-prd"..i].effect.productivity = v

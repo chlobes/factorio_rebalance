@@ -34,14 +34,13 @@ script.on_nth_tick(300, function()
 			pol = pol + (x.pol or 0) * stack
 		end
 		local p = 56
-		if v[1].bonus_mining_progress then prd = prd + mining_prd_bonus end
 		if spd - eff ~= 0 then output.insert{name=tostring(spd-eff+p+sign(spd-eff))} end
 		if spd ~= 0 then output.insert{name=tostring(spd+p*3+sign(spd))} end
 		if pol ~= 0 then output.insert{name=tostring(-pol+p*7+sign(-pol))} end
-		if prd > 56 then
+		if v[1].bonus_mining_progress then
 			prd = 1.01^prd - 1 - 0.01*mining_prd_bonus
 			local v = 64
-			local n = 9
+			local n = 12
 			for i=1,n,1 do
 				if prd > v then
 					prd = prd - v
