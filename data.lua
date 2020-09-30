@@ -20,9 +20,23 @@ function setting(name) log("setting: " .. name) return settings.startup[name].va
 
 function mul_recipe(name, m)
 	data.raw["recipe"][name].energy_required = (data.raw["recipe"][name].energy_required or 0.5) * m
-	for _, v in pairs(data.raw["recipe"][name].ingredients) do
+	local x = data.raw["recipe"][name].ingredients or data.raw["recipe"][name].normal.ingredients
+	for _, v in pairs(x) do
 		v[2] = math.floor(v[2] * m + 0.5)
 	end
+end
+
+function blank_module(name)
+	data.raw["module"][name] = {
+		type = "module",
+		effect = {},
+		stack_size = 1,
+		icon = "__base__/graphics/icons/effectivity-module.png",
+		icon_size = 64,
+		category = "effectivity",
+		tier = 1,
+		name = name,
+	}
 end
 
 if setting("disable burner inserters") then disable_recipe("burner-inserter") end
@@ -58,6 +72,17 @@ if setting("rebalance furnace power and emissions") then
 	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 3
 	mul_recipe("electric-furnace", 2)
 end
+if setting("rebalance assemblers") then
+	mul_recipe("assembling-machine-2", 2)
+	mul_recipe("assembling-machine-3", 2)
+	data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = 1
+	data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = "200kW"
+	data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = 6
+	data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = 4
+	data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = "1600kW"
+	data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = 18
+end
+data.raw["lab"]["lab"].energy_usage = setting("lab power use (kW)") .. "kW"
 data.raw["inserter"]["fast-inserter"].energy_per_movement = setting("fast inserter power cost (KJ)") .. "KJ"
 data.raw["inserter"]["fast-inserter"].energy_per_rotation = setting("fast inserter power cost (KJ)") .. "KJ"
 data.raw["inserter"]["fast-inserter"].energy_source.drain = setting("fast inserter idle power (kW)") .. "kW"
@@ -67,19 +92,6 @@ data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel craftin
 
 for _, m in pairs(data.raw.module) do m.effect = {} end
 local p = 112
-
-function blank_module(name)
-	data.raw["module"][name] = {
-		type = "module",
-		effect = {},
-		stack_size = 1,
-		icon = "__base__/graphics/icons/effectivity-module.png",
-		icon_size = 64,
-		category = "effectivity",
-		tier = 1,
-		name = name,
-	}
-end
 
 for i=1,p*8,1 do
 	blank_module(i)

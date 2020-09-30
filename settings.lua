@@ -88,3 +88,15 @@ data:extend{{
 	setting_type = "startup",
 	default_value = 120,
 }}
+data:extend{{
+	type = "bool-setting",
+	name = "rebalance assemblers",
+	setting_type = "startup",
+	default_value = true,
+}}
+data:extend{{
+	type = "double-setting",
+	name = "lab power use (kW)",
+	setting_type = "startup",
+	default_value = 120,
+}}
