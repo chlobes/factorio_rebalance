@@ -66,7 +66,7 @@ data:extend{{
 }}
 data:extend{{
 	type = "bool-setting",
-	name = "rebalance furnace power and emissions",
+	name = "rebalance furnaces",
 	setting_type = "startup",
 	default_value = true,
 }}

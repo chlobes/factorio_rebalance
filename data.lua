@@ -62,7 +62,7 @@ end
 
 data.raw["solar-panel"]["solar-panel"].production = setting("solar panel power output (kW)") .. "kW"
 data.raw["accumulator"]["accumulator"].energy_source.buffer_capacity = setting("accumulator max energy (MJ)") .. "MJ"
-if setting("rebalance furnace power and emissions") then
+if setting("rebalance furnaces") then
 	data.raw["furnace"]["steel-furnace"].energy_usage = "135kW"
 	data.raw["furnace"]["steel-furnace"].energy_source.emissions_per_minute = 3
 	data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = 1 }
