@@ -16,12 +16,17 @@ local module_stats = {
 script.on_init(function() if not global.beacons then global.beacons = {} end end)
 script.on_nth_tick(300, function()
 	local i = 0
+	local j = 0
 	for _, v in pairs(global.beacons) do
 		local techs = v[1].force.technologies
 		while techs["mining-productivity-"..i+1].researched do i = i + 1 end
+		while j < 6 and techs["research-speed-"..j+1].researched do j = j + 1 end
 		break
 	end
 	local mining_prd_bonus = i * 10
+	local lab_spd_bonus = j * 4
+	local lab_eff_bonus = 0
+	if j > 2 then lab_eff_bonus = 2 * (j - 2) end
 	for _, v in pairs(global.beacons) do
 		local output = v[2].get_module_inventory()
 		output.clear()
@@ -33,10 +38,14 @@ script.on_nth_tick(300, function()
 			prd = prd + (x.prd or 0) * stack
 			pol = pol + (x.pol or 0) * stack
 		end
-		local p = 56
-		if spd - eff ~= 0 then output.insert{name=tostring(spd-eff+p+sign(spd-eff))} end
-		if spd ~= 0 then output.insert{name=tostring(spd+p*3+sign(spd))} end
-		if pol ~= 0 then output.insert{name=tostring(-pol+p*7+sign(-pol))} end
+		if v[1].type == "lab" then
+			spd = spd + lab_spd_bonus
+			eff = eff + lab_eff_bonus
+		end
+		local p = 136
+		if spd - eff ~= 0 then output.insert{name=tostring(spd-eff+p-sign(spd-eff))} end
+		if spd ~= 0 then output.insert{name=tostring(spd+p*3-sign(spd))} end
+		if pol ~= 0 then output.insert{name=tostring(-pol+p*7-sign(-pol))} end
 		if v[1].bonus_mining_progress then
 			prd = 1.01^prd - 1 - 0.01*mining_prd_bonus
 			local v = 64
@@ -44,12 +53,12 @@ script.on_nth_tick(300, function()
 			for i=1,n,1 do
 				if prd > v then
 					prd = prd - v
-					output.insert{name=tostring("mining-prd"..i)}
+					output.insert{name="mining-prd-"..i}
 				end
 				v = v / 2
 			end
 		else
-			if prd ~= 0 then output.insert{name=tostring(prd+p*5+sign(prd))} end
+			if prd ~= 0 then output.insert{name=tostring(prd+p*5-sign(prd))} end
 		end
 	end
 end)
