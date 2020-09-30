@@ -18,6 +18,13 @@ end
 
 function setting(name) log("setting: " .. name) return settings.startup[name].value end
 
+function mul_recipe(name, m)
+	data.raw["recipe"][name].energy_required = (data.raw["recipe"][name].energy_required or 0.5) * m
+	for _, v in pairs(data.raw["recipe"][name].ingredients) do
+		v[2] = math.floor(v[2] * m + 0.5)
+	end
+end
+
 if setting("disable burner inserters") then disable_recipe("burner-inserter") end
 if setting("disable solid fuel from heavy oil") then
 	disable_recipe("solid-fuel-from-heavy-oil")
@@ -30,21 +37,10 @@ if setting("disable solid fuel from heavy oil") then
 end
 data.raw.technology["effect-transmission"] = nil
 
-local x = setting("solar panel cost multiplier")
-data.raw["recipe"]["solar-panel"].energy_required = data.raw["recipe"]["solar-panel"].energy_required * x
-for _, v in pairs(data.raw["recipe"]["solar-panel"].ingredients) do
-	v[2] = math.floor(v[2] * x + 0.5)
-end
-x = setting("accumulator cost multiplier")
-data.raw["recipe"]["accumulator"].energy_required = data.raw["recipe"]["accumulator"].energy_required * x
-for _, v in pairs(data.raw["recipe"]["accumulator"].ingredients) do
-	v[2] = math.floor(v[2] * x + 0.5)
-end
-x = setting("boiler cost multiplier")
-data.raw["recipe"]["boiler"].energy_required = 10
-for _, v in pairs(data.raw["recipe"]["boiler"].ingredients) do
-	v[2] = math.floor(v[2] * x + 0.5)
-end
+mul_recipe("solar-panel", setting("solar panel cost multiplier"))
+mul_recipe("accumulator", setting("accumulator cost multiplier"))
+mul_recipe("boiler", setting("boiler cost multiplier"))
+mul_recipe("fast-inserter", setting("fast inserter cost multiplier"))
 if setting("cheaper steam engines") then
 	data.raw["recipe"]["steam-engine"].normal.ingredients[1][2] = 4
 	data.raw["recipe"]["steam-engine"].normal.ingredients[3][2] = 5
@@ -55,12 +51,12 @@ data.raw["accumulator"]["accumulator"].energy_source.buffer_capacity = setting("
 if setting("rebalance furnace power and emissions") then
 	data.raw["furnace"]["steel-furnace"].energy_usage = "135kW"
 	data.raw["furnace"]["steel-furnace"].energy_source.emissions_per_minute = 3
-	data.raw["furnace"]["electric-furnace"].energy_usage = "225kW"
-	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 4
-	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 1.25
-end
-for _, v in pairs(data.raw["recipe"]["fast-inserter"].ingredients) do
-	v[2] = v[2] * setting("fast inserter cost multiplier")
+	data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = 1 }
+	data.raw["furnace"]["steel-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
+	data.raw["furnace"]["electric-furnace"].energy_usage = "400kW"
+	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 2.5
+	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 3
+	mul_recipe("electric-furnace", 2)
 end
 data.raw["inserter"]["fast-inserter"].energy_per_movement = setting("fast inserter power cost (KJ)") .. "KJ"
 data.raw["inserter"]["fast-inserter"].energy_per_rotation = setting("fast inserter power cost (KJ)") .. "KJ"
