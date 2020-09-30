@@ -6,9 +6,9 @@ local module_stats = {
 	["effectivity-module"] = { eff = 1, },
 	["effectivity-module-2"] = { eff = 2, },
 	["effectivity-module-3"] = { eff = 5, spd =-2, pol =-1, },
-	["speed-module"] = { eff =-2, spd = 3, },
-	["speed-module-2"] = { eff =-3, spd = 5, },
-	["speed-module-3"] = { eff =-6, spd =11, prd =-1, pol = 1, },
+	["speed-module"] = { eff =-2, spd = 6, },
+	["speed-module-2"] = { eff =-3, spd = 10, },
+	["speed-module-3"] = { eff =-6, spd =22, prd =-1, pol = 1, },
 	["productivity-module"] = { eff =-2, spd =-1, prd = 5, pol = 1, },
 	["productivity-module-2"] = { eff =-3, spd =-1, prd = 8, pol = 2, },
 	["productivity-module-3"] = { eff =-4, spd =-3, prd = 14, pol = 4, },
@@ -42,7 +42,7 @@ script.on_nth_tick(300, function()
 			spd = spd + lab_spd_bonus
 			eff = eff + lab_eff_bonus
 		end
-		local p = 136
+		local p = 112
 		if spd - eff ~= 0 then output.insert{name=tostring(spd-eff+p-sign(spd-eff))} end
 		if spd ~= 0 then output.insert{name=tostring(spd+p*3-sign(spd))} end
 		if pol ~= 0 then output.insert{name=tostring(-pol+p*7-sign(-pol))} end

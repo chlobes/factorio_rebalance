@@ -70,7 +70,7 @@ data.raw["item"]["rocket-fuel"].fuel_value = setting("rocket fuel energy (MJ)") 
 data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel crafting time")
 
 for _, m in pairs(data.raw.module) do m.effect = {} end
-local p = 136
+local p = 112
 
 function blank_module(name)
 	data.raw["module"][name] = {
