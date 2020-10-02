@@ -78,9 +78,9 @@ if setting("rebalance assemblers") then
 	data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = 1
 	data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = "200kW"
 	data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = 6
-	data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = 4
-	data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = "1600kW"
-	data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = 18
+	data.raw["assembling-machine"]["assembling-machine-3"].crafting_speed = 4
+	data.raw["assembling-machine"]["assembling-machine-3"].energy_usage = "1600kW"
+	data.raw["assembling-machine"]["assembling-machine-3"].energy_source.emissions_per_minute = 18
 end
 data.raw["lab"]["lab"].energy_usage = setting("lab power use (kW)") .. "kW"
 data.raw["inserter"]["fast-inserter"].energy_per_movement = setting("fast inserter power cost (KJ)") .. "KJ"
