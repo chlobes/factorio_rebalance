@@ -125,4 +125,4 @@ beacon.distribution_effectivity = 1
 beacon.energy_source = { type = "void" }
 beacon.module_specification.module_slots = 4+n
 beacon.supply_area_distance = 0
-beacon.flags = { "placeable-off-grid","not-blueprintable","not-deconstructable","not-on-map","hidden","hide-alt-info","not-flammable","no-copy-paste","not-selectable-in-game","not-upgradable"}
+beacon.flags = { "placeable-off-grid","not-blueprintable","not-deconstructable","not-on-map","hidden","hide-alt-info","not-flammable","no-copy-paste","not-selectable-in-game","not-upgradable","no-automated-item-insertion"}
