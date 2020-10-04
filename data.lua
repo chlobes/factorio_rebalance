@@ -99,10 +99,10 @@ end
 for i=1,p*2,1 do
 	local v = i - p
 	v = v + sign(v)
-	data.raw["module"][i].effect.consumption = { bonus = 1.1^v - 1 }
-	data.raw["module"][i+p*2].effect.speed = { bonus = 1.1^v - 1 }
+	data.raw["module"][i].effect.consumption = { bonus = 1.1046^v - 1 }
+	data.raw["module"][i+p*2].effect.speed = { bonus = 1.1046^v - 1 }
 	data.raw["module"][i+p*4].effect.productivity = { bonus = 1.01^v - 1 }
-	data.raw["module"][i+p*6].effect.pollution = { bonus = 1.2^v - 1 }
+	data.raw["module"][i+p*6].effect.pollution = { bonus = 1.2202^v - 1 }
 end
 local v = 64
 local n = 12
@@ -115,7 +115,7 @@ for i=1,6,1 do
 	data.raw.technology["research-speed-"..i].effects = nil
 end
 local beacon = data.raw["beacon"].beacon
-local delete = { "close_sound", "collision_box", "corpse", "damage_trigger_effect", "drawing_box", "dying_explosion", "flags","graphics_set","icon","icon_mipmaps","icon_size","max_health","minable","open_sound","radius_visualisation_picture","selection_box","vehicle_impact_sound","water_reflection","working_sound" }
+local delete = { "close_sound", "collision_box", "corpse", "damage_trigger_effect", "drawing_box", "dying_explosion","graphics_set","flags","icon","icon_mipmaps","icon_size","max_health","minable","open_sound","radius_visualisation_picture","selection_box","vehicle_impact_sound","water_reflection","working_sound" }
 for _, name in ipairs(delete) do
 	beacon[name] = nil
 end
@@ -125,4 +125,4 @@ beacon.distribution_effectivity = 1
 beacon.energy_source = { type = "void" }
 beacon.module_specification.module_slots = 4+n
 beacon.supply_area_distance = 0
-beacon.hide_alt_info = true
+beacon.flags = { "placeable-off-grid","not-blueprintable","not-deconstructable","not-on-map","hidden","hide-alt-info","not-flammable","no-copy-paste","not-selectable-in-game","not-upgradable"}
