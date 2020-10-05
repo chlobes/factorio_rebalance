@@ -36,6 +36,7 @@ function blank_module(name)
 		category = "effectivity",
 		tier = 1,
 		name = name,
+		flags = { "hidden" },
 	}
 end
 
@@ -68,6 +69,7 @@ if setting("rebalance furnaces") then
 	data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = 1 }
 	data.raw["furnace"]["steel-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
 	data.raw["furnace"]["electric-furnace"].energy_usage = "400kW"
+	data.raw["furnace"]["electric-furnace"].crafting_speed = 4
 	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 2.5
 	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 3
 	mul_recipe("electric-furnace", 2)

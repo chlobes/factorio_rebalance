@@ -80,7 +80,11 @@ function dead_crafter(event)
 		end
 	end
 end
-local filter = {{ filter = "crafting-machine" }, { filter = "type", type = "lab" }}
+local filter = {
+	{ filter = "crafting-machine" },
+	{ filter = "type", type = "lab" },
+	{ filter = "type", type = "mining-drill" },
+}
 script.on_event(defines.events.on_built_entity, new_crafter, filter)
 script.on_event(defines.events.on_robot_built_entity, new_crafter, filter)
 script.on_event(defines.events.on_entity_died, dead_crafter, filter)
