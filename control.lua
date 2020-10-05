@@ -19,7 +19,13 @@ script.on_nth_tick(300, function()
 	local j = 0
 	for _, v in pairs(global.beacons) do
 		local techs = v[1].force.technologies
-		while techs["mining-productivity-"..i+1].researched do i = i + 1 end
+		if techs["mining-productivity-3"].researched then
+			i = techs["mining-productivity-4"].level - 1
+		elseif techs["mining-productivity-2"].researched then
+			i = 2
+		elseif techs["mining-productivity-1"].researched then
+			i = 1
+		end
 		while j < 6 and techs["research-speed-"..j+1].researched do j = j + 1 end
 		break
 	end
