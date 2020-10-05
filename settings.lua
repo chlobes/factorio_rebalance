@@ -41,10 +41,10 @@ data:extend{{
 	default_value = 10,
 }}
 data:extend{{
-	type = "bool-setting",
-	name = "cheaper steam engines",
+	type = "double-setting",
+	name = "steam engine cost multiplier",
 	setting_type = "startup",
-	default_value = true,
+	default_value = 0.5,
 }}
 data:extend{{
 	type = "double-setting",

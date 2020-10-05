@@ -19,9 +19,17 @@ end
 function setting(name) log("setting: " .. name) return settings.startup[name].value end
 
 function mul_recipe(name, m)
-	data.raw["recipe"][name].energy_required = (data.raw["recipe"][name].energy_required or 0.5) * m
-	local x = data.raw["recipe"][name].ingredients or data.raw["recipe"][name].normal.ingredients
-	for _, v in pairs(x) do
+	local r = data.raw["recipe"][name]
+	if r.ingredients then
+		mul_recipe_int(r, m)
+	else
+		mul_recipe_int(r.normal, m)
+		mul_recipe_int(r.expensive, m)
+	end
+end
+function mul_recipe_int(r, m)
+	r.energy_required = (r.energy_required or 0.5) * m
+	for _, v in pairs(r.ingredients) do
 		v[2] = math.floor(v[2] * m + 0.5)
 	end
 end
@@ -56,10 +64,7 @@ mul_recipe("solar-panel", setting("solar panel cost multiplier"))
 mul_recipe("accumulator", setting("accumulator cost multiplier"))
 mul_recipe("boiler", setting("boiler cost multiplier"))
 mul_recipe("fast-inserter", setting("fast inserter cost multiplier"))
-if setting("cheaper steam engines") then
-	data.raw["recipe"]["steam-engine"].normal.ingredients[1][2] = 4
-	data.raw["recipe"]["steam-engine"].normal.ingredients[3][2] = 5
-end
+mul_recipe("steam-engine", setting("steam engine cost multiplier"))
 
 data.raw["solar-panel"]["solar-panel"].production = setting("solar panel power output (kW)") .. "kW"
 data.raw["accumulator"]["accumulator"].energy_source.buffer_capacity = setting("accumulator max energy (MJ)") .. "MJ"
@@ -68,7 +73,7 @@ if setting("rebalance furnaces") then
 	data.raw["furnace"]["steel-furnace"].energy_source.emissions_per_minute = 3
 	data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = 1 }
 	data.raw["furnace"]["steel-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
-	data.raw["furnace"]["electric-furnace"].energy_usage = "400kW"
+	data.raw["furnace"]["electric-furnace"].energy_usage = "350kW"
 	data.raw["furnace"]["electric-furnace"].crafting_speed = 4
 	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 2.5
 	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 3
@@ -106,11 +111,11 @@ for i=1,p*2,1 do
 	data.raw["module"][i+p*4].effect.productivity = { bonus = 1.01^v - 1 }
 	data.raw["module"][i+p*6].effect.pollution = { bonus = 1.2202^v - 1 }
 end
-local v = 64
+local v = 20.48
 local n = 12
 for i=1,n,1 do --extra productivity modules for miners
 	blank_module("mining-prd-"..i)
-	data.raw["module"]["mining-prd-"..i].effect.productivity = v
+	data.raw["module"]["mining-prd-"..i].effect.productivity = { bonus = v }
 	v = v / 2
 end
 for i=1,6,1 do
