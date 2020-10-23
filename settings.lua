@@ -100,3 +100,9 @@ data:extend{{
 	setting_type = "startup",
 	default_value = 120,
 }}
+data:extend{{
+	type = "double-setting",
+	name = "energy shield mk2 recharge rate",
+	setting_type = "startup",
+	default_value = 24
+}}

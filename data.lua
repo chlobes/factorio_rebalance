@@ -96,6 +96,9 @@ data.raw["inserter"]["fast-inserter"].energy_source.drain = setting("fast insert
 data.raw["item"]["solid-fuel"].fuel_value = setting("solid fuel energy (MJ)") .. "MJ"
 data.raw["item"]["rocket-fuel"].fuel_value = setting("rocket fuel energy (MJ)") .. "MJ"
 data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel crafting time")
+local s = data.raw["energy-shield-equipment"]["energy-shield-mk2-equipment"].energy_source
+s.input_flow_limit = (30 * setting("energy shield mk2 recharge rate")) .. "kW"
+s.buffer_capacity = (15 * setting("energy shield mk2 recharge rate")) .. "kJ"
 
 for _, m in pairs(data.raw.module) do m.effect = {} end
 local p = 112
