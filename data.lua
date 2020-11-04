@@ -99,6 +99,11 @@ data.raw["recipe"]["rocket-fuel"].energy_required = setting("rocket fuel craftin
 local s = data.raw["energy-shield-equipment"]["energy-shield-mk2-equipment"].energy_source
 s.input_flow_limit = (30 * setting("energy shield mk2 recharge rate")) .. "kW"
 s.buffer_capacity = (15 * setting("energy shield mk2 recharge rate")) .. "kJ"
+local s = data.raw["active-defense-equipment"]["personal-laser-defense-equipment"]
+local p = setting("personal laser defense power use (KJ)")
+s.attack_parameters.ammo_type.energy_consumption = p .. "kJ"
+s.energy_source.buffer_capacity = (220 * p / 50) .. "kJ"
+s.attack_parameters.damage_modifier = setting("personal laser defense damage multiplier (base game is 3)")
 
 data.raw["capsule"]["raw-fish"].capsule_action.attack_parameters.ammo_type.action.action_delivery.target_effects[1].damage.amount = - setting("fish healing")
 

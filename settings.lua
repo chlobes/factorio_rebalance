@@ -105,12 +105,24 @@ data:extend({
 		type = "double-setting",
 		name = "energy shield mk2 recharge rate",
 		setting_type = "startup",
-		default_value = 24
+		default_value = 24,
 	},
 	{
 		type = "double-setting",
 		name = "fish healing",
 		setting_type = "startup",
 		default_value = 20,
+	},
+	{
+		type = "double-setting",
+		name = "personal laser defense damage multiplier (base game is 3)",
+		setting_type = "startup",
+		default_value = 2,
+	},
+	{
+		type = "double-setting",
+		name = "personal laser defense power use (KJ)",
+		setting_type = "startup",
+		default_value = 75,
 	},
 })
