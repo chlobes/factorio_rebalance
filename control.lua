@@ -74,7 +74,7 @@ script.on_nth_tick(300, function()
 	end
 end)
 function new_crafter(event)
-	local entity = event.created_entity
+	local entity = event.created_entity or event.entity
 	local inv = entity.get_module_inventory()
 	if inv and #inv > 0 then
 		local pos = entity.position
@@ -96,6 +96,7 @@ local filter = {
 script.on_event(defines.events.on_built_entity, new_crafter, filter)
 script.on_event(defines.events.on_robot_built_entity, new_crafter, filter)
 script.on_event(defines.events.script_raised_built, new_crafter, filter)
+script.on_event(defines.events.script_raised_revive, new_crafter, filter)
 script.on_event(defines.events.on_entity_died, dead_crafter, filter)
 script.on_event(defines.events.on_player_mined_entity, dead_crafter, filter)
 script.on_event(defines.events.on_robot_mined_entity, dead_crafter, filter)

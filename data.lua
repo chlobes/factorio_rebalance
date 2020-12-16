@@ -16,7 +16,7 @@ function disable_recipe(name)
 	end
 end
 
-function setting(name) log("setting: " .. name) return settings.startup[name].value end
+function setting(name) return settings.startup[name].value end
 
 function mul_recipe(name, m)
 	local r = data.raw["recipe"][name]
@@ -51,7 +51,7 @@ end
 if setting("disable burner inserters") then disable_recipe("burner-inserter") end
 if setting("disable solid fuel from heavy oil") then
 	disable_recipe("solid-fuel-from-heavy-oil")
-	effects = data.raw.technology["advanced-oil-processing"].effects
+	local effects = data.raw.technology["advanced-oil-processing"].effects
 	for i, v in ipairs(effects) do
 		if v.recipe == "solid-fuel-from-heavy-oil" then
 			table.remove(effects, i)
@@ -68,27 +68,40 @@ mul_recipe("steam-engine", setting("steam engine cost multiplier"))
 
 data.raw["solar-panel"]["solar-panel"].production = setting("solar panel power output (kW)") .. "kW"
 data.raw["accumulator"]["accumulator"].energy_source.buffer_capacity = setting("accumulator max energy (MJ)") .. "MJ"
-if setting("rebalance furnaces") then
-	data.raw["furnace"]["steel-furnace"].energy_usage = "135kW"
-	data.raw["furnace"]["steel-furnace"].energy_source.emissions_per_minute = 3
-	data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = 1 }
-	data.raw["furnace"]["steel-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
-	data.raw["furnace"]["electric-furnace"].energy_usage = "350kW"
-	data.raw["furnace"]["electric-furnace"].crafting_speed = 4
-	data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = 2.5
-	data.raw["furnace"]["electric-furnace"].module_specification.module_slots = 3
-	mul_recipe("electric-furnace", 2)
-end
-if setting("rebalance assemblers") then
-	mul_recipe("assembling-machine-2", 2)
-	mul_recipe("assembling-machine-3", 2)
-	data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = 1
-	data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = "200kW"
-	data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = 6
-	data.raw["assembling-machine"]["assembling-machine-3"].crafting_speed = 4
-	data.raw["assembling-machine"]["assembling-machine-3"].energy_usage = "1600kW"
-	data.raw["assembling-machine"]["assembling-machine-3"].energy_source.emissions_per_minute = 18
-end
+data.raw["furnace"]["stone-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
+data.raw["furnace"]["steel-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
+data.raw["furnace"]["electric-furnace"].allowed_effects = { "consumption", "speed", "productivity", "pollution", }
+mul_recipe("stone-furnace", setting("stone furnace cost multiplier"))
+data.raw["furnace"]["stone-furnace"].energy_usage = setting("stone furnace energy usage (kW)") .. "kW"
+data.raw["furnace"]["stone-furnace"].crafting_speed = setting("stone furnace crafting speed")
+data.raw["furnace"]["stone-furnace"].energy_source.emissions_per_minute = setting("stone furnace pollution")
+data.raw["furnace"]["stone-furnace"].module_specification = { module_slots = setting("stone furnace module slots") }
+if setting("stone furnace module slots") < 1 then data.raw["furnace"]["stone-furnace"].module_specification = nil end
+mul_recipe("steel-furnace", setting("steel furnace cost multiplier"))
+data.raw["furnace"]["steel-furnace"].energy_usage = setting("steel furnace energy usage (kW)") .. "kW"
+data.raw["furnace"]["steel-furnace"].crafting_speed = setting("steel furnace crafting speed")
+data.raw["furnace"]["steel-furnace"].energy_source.emissions_per_minute = setting("steel furnace pollution")
+data.raw["furnace"]["steel-furnace"].module_specification = { module_slots = setting("steel furnace module slots") }
+if setting("steel furnace module slots") < 1 then data.raw["furnace"]["steel-furnace"].module_specification = nil end
+mul_recipe("electric-furnace", setting("electric furnace cost multiplier"))
+data.raw["furnace"]["electric-furnace"].energy_usage = setting("electric furnace energy usage (kW)") .. "kW"
+data.raw["furnace"]["electric-furnace"].crafting_speed = setting("electric furnace crafting speed")
+data.raw["furnace"]["electric-furnace"].energy_source.emissions_per_minute = setting("electric furnace pollution")
+data.raw["furnace"]["electric-furnace"].module_specification = { module_slots = setting("electric furnace module slots") }
+data.raw["furnace"]["electric-furnace"].module_specification.module_slots = setting("electric furnace module slots")
+if setting("electric furnace module slots") < 1 then data.raw["furnace"]["electric-furnace"].module_specification = nil end
+mul_recipe("assembling-machine-1", setting("assembling machine 1 cost multiplier"))
+mul_recipe("assembling-machine-2", setting("assembling machine 2 cost multiplier"))
+mul_recipe("assembling-machine-3", setting("assembling machine 3 cost multiplier"))
+data.raw["assembling-machine"]["assembling-machine-1"].crafting_speed = setting("assembling machine 1 crafting speed")
+data.raw["assembling-machine"]["assembling-machine-2"].crafting_speed = setting("assembling machine 2 crafting speed")
+data.raw["assembling-machine"]["assembling-machine-3"].crafting_speed = setting("assembling machine 3 crafting speed")
+data.raw["assembling-machine"]["assembling-machine-1"].energy_usage = setting("assembling machine 1 energy usage (kW)") .. "kW"
+data.raw["assembling-machine"]["assembling-machine-2"].energy_usage = setting("assembling machine 2 energy usage (kW)") .. "kW"
+data.raw["assembling-machine"]["assembling-machine-3"].energy_usage = setting("assembling machine 3 energy usage (kW)") .. "kW"
+data.raw["assembling-machine"]["assembling-machine-1"].energy_source.emissions_per_minute = setting("assembling machine 1 pollution")
+data.raw["assembling-machine"]["assembling-machine-2"].energy_source.emissions_per_minute = setting("assembling machine 2 pollution")
+data.raw["assembling-machine"]["assembling-machine-3"].energy_source.emissions_per_minute = setting("assembling machine 3 pollution")
 data.raw["lab"]["lab"].energy_usage = setting("lab power use (kW)") .. "kW"
 data.raw["inserter"]["fast-inserter"].energy_per_movement = setting("fast inserter power cost (KJ)") .. "KJ"
 data.raw["inserter"]["fast-inserter"].energy_per_rotation = setting("fast inserter power cost (KJ)") .. "KJ"
